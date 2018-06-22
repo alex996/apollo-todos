@@ -62,7 +62,22 @@ class TodoForm extends Component {
       }}
     >
       {createTodo =>
-        <form className={classes.form}>
+        <form
+          className={classes.form}
+          onSubmit={e => {
+            e.preventDefault()
+
+            const { text } = this.state
+
+            if (text) {
+              createTodo({
+                variables: { text }
+              })
+
+              this.setState({ text: '' })
+            }
+          }}
+        >
           <TextField
             value={text}
             label='Type anything...'
@@ -71,19 +86,9 @@ class TodoForm extends Component {
             onChange={this.handleChange}
           />
           <Button
+            type='submit'
             color='primary'
             variant='raised'
-            onClick={() => {
-              const { text } = this.state
-
-              if (text) {
-                createTodo({
-                  variables: { text }
-                })
-
-                this.setState({ text: '' })
-              }
-            }}
           >
             Create
           </Button>
